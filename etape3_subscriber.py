@@ -22,22 +22,22 @@ client.connect(BROKER,PORT)
 client.subscribe(CLOUD_TOPIC)
 client.loop_start()
 
-# plt.style.use("seaborn")
-# fig, ax = plt.subplots()
-# ax.set_title("Graphique des données moyennes publiées vers le cloud")
-# ax.set_xlabel("Temps")
-# ax.set_ylabel("Valeur moyenne")
+plt.style.use("seaborn")
+fig, ax = plt.subplots()
+ax.set_title("Graphique des données moyennes publiées vers le cloud")
+ax.set_xlabel("Temps")
+ax.set_ylabel("Valeur moyenne")
 
-# def update(frame):
-#     ax.clear()
-#     ax.plot(chunck_data, label="Moyenne des données", color="b")
-#     ax.set_title("Graphique des données moyennes publiées vers le cloud")
-#     ax.set_xlabel("Temps")
-#     ax.set_ylabel("Valeur moyenne")
-#     ax.legend()
+def update(frame):
+    ax.clear()
+    ax.plot(chunck_data, label="Moyenne des données", color="b")
+    ax.set_title("Graphique des données moyennes publiées vers le cloud")
+    ax.set_xlabel("Temps")
+    ax.set_ylabel("Valeur moyenne")
+    ax.legend()
 
-# ani = FuncAnimation(fig, update, interval=1000)
-# plt.show()
+ani = FuncAnimation(fig, update, interval=1000)
+plt.show()
 
 try:
     while True:
