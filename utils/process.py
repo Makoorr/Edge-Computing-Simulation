@@ -10,7 +10,7 @@ def next_time_interval (l):
     return (inter_event_time)
 
 # lamda: lambda number of messages per second (poissonian arrival model)
-def Generation_pub_messages_oneTopic(client, lamda, NbreMessages, data_set):
+def Generation_pub_messages_oneTopic(client, lamda, NbreMessages, data_set, topic):
     global Time
     i=0
     
@@ -24,6 +24,6 @@ def Generation_pub_messages_oneTopic(client, lamda, NbreMessages, data_set):
         
         message = str(data_set[i])
 
-        client.publish("tp4/topic",message) 
+        client.publish(topic,message) 
 
         i=i+1

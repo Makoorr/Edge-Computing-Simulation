@@ -3,6 +3,7 @@ from utils.simulator import Simulator
 from paho.mqtt import client as mqtt_client
 
 BROKER="localhost"
+topic="tp4/topic"
 
 print("Start message publication....") 
 
@@ -21,4 +22,4 @@ print("start periodic publish")
 # l : lambda arrivals per seconds
 l=50
 NbreMessages = len(data_set)
-Generation_pub_messages_oneTopic(client, l, NbreMessages, data_set)
+Generation_pub_messages_oneTopic(client, l, NbreMessages, data_set, topic)
