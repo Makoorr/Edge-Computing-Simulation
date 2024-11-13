@@ -8,38 +8,48 @@ CLOUD_TOPIC = "tp4/cloud"
 BROKER="localhost"
 PORT=1883
 
-chunck_data = []
-SAMPLING_PERIOD = 10
+data = []
+original_data = []
+reduced_data = []
+WINDOW_SIZE = 3
 
 client = ClientFactory(CLOUD_TOPIC)
 
 def on_message(client, userdata, message):
-    data = moving_average(float(message.payload.decode()), SAMPLING_PERIOD)
+    global original_data
+    original_data.append(float(message.payload.decode()))
+    data.append(float(message.payload.decode()))
+
+    if len(data) < WINDOW_SIZE:
+        return
     
-    chunck_data.append(data)
-    print(f"Received data: {data}")
+    reduced_data.append(moving_average(data, WINDOW_SIZE))
+    
+    data.pop(0)
+    print(f"Received reduced_data: {reduced_data}")
 
 client.on_message = on_message
 client.connect(BROKER,PORT)
 client.subscribe(CLOUD_TOPIC)
 client.loop_start()
 
-# plt.style.use("seaborn")
-# fig, ax = plt.subplots()
-# ax.set_title("Graphique des données moyennes publiées vers le cloud")
-# ax.set_xlabel("Temps")
-# ax.set_ylabel("Valeur moyenne")
+plt.style.use("seaborn")
+fig, ax = plt.subplots()
+ax.set_title("Graphique des données moyennes publiées vers le cloud")
+ax.set_xlabel("Temps")
+ax.set_ylabel("Valeur moyenne")
 
-# def update(frame):
-#     ax.clear()
-#     ax.plot(chunck_data, label="Moyenne des données", color="b")
-#     ax.set_title("Graphique des données moyennes publiées vers le cloud")
-#     ax.set_xlabel("Temps")
-#     ax.set_ylabel("Valeur moyenne")
-#     ax.legend()
+def update(frame):
+    ax.clear()
+    ax.plot(original_data, label="Moyenne des données originals", color="g")
+    ax.plot(reduced_data, label="Moyenne des données", color="b")
+    ax.set_title("Graphique des données moyennes publiées vers le cloud")
+    ax.set_xlabel("Temps")
+    ax.set_ylabel("Valeur moyenne")
+    ax.legend()
 
-# ani = FuncAnimation(fig, update, interval=1000)
-# plt.show()
+ani = FuncAnimation(fig, update, interval=1000)
+plt.show()
 
 try:
     while True:
