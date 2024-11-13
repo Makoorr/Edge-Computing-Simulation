@@ -20,6 +20,6 @@ data_set = [simulator.calculate_next_value() for _ in range(100000)]
 print("start periodic publish")
 
 # l : lambda arrivals per seconds
-l=50
+l=20
 NbreMessages = len(data_set)
 Generation_pub_messages_oneTopic(client, l, NbreMessages, data_set, topic)
